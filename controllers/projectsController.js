@@ -86,23 +86,7 @@ exports.createProject = async (req, res) => {
     }
 };
 
-exports.deleteProject = async (req, res) => {
-    try {
-        const project = await Project.findById(req.params.projectId);
-        if (!project) return res.status(404).json({ message: 'Project not found' });
 
-        // Delete images from Cloudinary
-        for (const imageUrl of project.images) {
-            const publicId = imageUrl.split('/').pop().split('.')[0];
-            await cloudinary.uploader.destroy(publicId);
-        }
-
-        await project.remove();
-        res.json({ message: 'Project deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
 
 // exports.createProject = async (req, res) => {
 //     try {
